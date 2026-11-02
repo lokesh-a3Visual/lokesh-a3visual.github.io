@@ -41,66 +41,25 @@ p{margin:0}
 .btn.red{background:var(--red);border-color:var(--red);color:var(--bone)}
 .btn.red:hover{background:var(--red-hi);border-color:var(--red-hi);color:var(--ink)}
 
-/* Entry: a sealed door in a dark corridor. Torch, tape, door, eyes, logo, then an eyelid opens on the site. */
+/* Entry */
+.gate{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-left,0px));background:radial-gradient(circle at 50% 42%,#2b1512 0,var(--ink) 62%);perspective:1400px;overflow:hidden;transition:opacity .75s ease .55s,visibility 0s linear 1.3s}
+.gate.open{opacity:0;visibility:hidden;pointer-events:none}
+.gate-in{display:grid;justify-items:center;gap:46px;width:min(480px,100%)}
+.gate-line{font-family:var(--type);font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--dust);text-align:center}
+.folder{position:relative;width:100%;aspect-ratio:1.32;max-height:58vh;transform-style:preserve-3d;animation:rise 1s ease both}
+.folder-back{position:absolute;inset:0;background:var(--ink);border:1px solid var(--manila-dk);display:grid;place-items:center;padding:20px;text-align:center}
+.folder-back h1{font-size:clamp(34px,10vw,50px);color:var(--bone)}
+.folder-back h1 b{color:var(--red-hi);font-weight:400}
+.cover{position:absolute;inset:0;background:var(--manila);color:var(--ink);padding:9% 8%;display:flex;flex-direction:column;justify-content:space-between;transform-origin:left center;transition:transform 1.05s cubic-bezier(.6,.05,.3,1);box-shadow:0 26px 70px #000c;backface-visibility:hidden}
+.cover::before{content:"CASE FILE";position:absolute;left:0;top:-30px;height:31px;padding:8px 26px 0 14px;background:var(--manila);font-family:var(--type);font-size:13px;letter-spacing:.14em;clip-path:polygon(0 0,86% 0,100% 100%,0 100%)}
+.gate.open .cover{transform:rotateY(-128deg)}
+.gate.open .folder{animation:plunge 1.25s ease-in forwards}
+.cover-name{max-width:60%;font-family:var(--display);font-size:clamp(32px,9vw,46px);line-height:1.04;text-transform:uppercase}
+.cover-meta{font-family:var(--type);font-size:13px;letter-spacing:.06em;line-height:1.7}
+.cover .stamp{position:absolute;right:7%;bottom:12%;transform:rotate(-9deg)}
 .stamp{display:inline-block;padding:3px 9px;border:2px solid currentColor;color:var(--red);font-family:var(--type);font-size:13px;letter-spacing:.12em;text-transform:uppercase;line-height:1.35}
-.gate{--tape:#d9b312;--gx:50%;--gy:45%;position:fixed;inset:0;z-index:50;overflow:hidden;background:#040303;color:var(--bone);perspective:900px}
-.scene{position:absolute;inset:0;display:grid;place-items:center;background:repeating-linear-gradient(90deg,#1b1513 0 2px,#161110 2px 6px),#161110;transform-origin:50% 48%}
-.scrawl{position:absolute;font-family:var(--type);color:#8f1216;line-height:1.1;text-transform:uppercase;white-space:nowrap}
-.door{position:relative;width:min(330px,60vw);height:min(70vh,520px);transform-style:preserve-3d;box-shadow:0 0 0 12px #0a0807,0 0 0 13px #33291f}
-.void{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 90%,#6d0b10 0,#1d0304 46%,#000 78%)}
-.eyes{position:absolute;left:50%;top:44%;display:flex;gap:20px;transform:translateX(-50%);opacity:0}
-.eyes i{width:22px;height:9px;border-radius:50%;background:radial-gradient(circle,#160000 0 24%,#ffd9c7 27%,#e52a2a 70%);box-shadow:0 0 16px #f22}
-.leaf{position:absolute;top:0;bottom:0;width:50%;background:linear-gradient(180deg,#33302e,#1d1b1a 55%,#272422);transition:transform 1.9s cubic-bezier(.5,0,.25,1);backface-visibility:hidden;border:1px solid #000}
-.leaf::after{content:"";position:absolute;inset:14px;border:1px solid #00000090;box-shadow:inset 0 0 26px #000c}
-.leaf.l{left:0;transform-origin:left center}
-.leaf.r{right:0;transform-origin:right center}
-.seal{position:absolute;z-index:2;left:50%;top:15%;transform:translateX(-50%);width:76%;padding:8px 6px;background:#c9c0ae;color:#190c0a;text-align:center;font-family:var(--type);font-size:13px;letter-spacing:.08em;line-height:1.35;transition:opacity .25s}
-.seal b{display:block;font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:.03em;color:var(--red)}
-.tape{position:absolute;z-index:3;left:-22%;width:144%;padding:4px 0;background:var(--tape);color:#0c0a09;font-family:var(--display);font-size:15px;letter-spacing:.14em;text-align:center;white-space:nowrap;overflow:hidden;box-shadow:0 3px 8px #000b;transition:transform .9s cubic-bezier(.5,0,.9,.6),opacity .9s}
-.tape.a{top:48%;transform:rotate(-13deg)}
-.tape.b{top:62%;transform:rotate(9deg)}
-.torch-gate{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle min(250px,46vw) at var(--gx) var(--gy),#0000 0,#040303a8 58%,#040303f7 100%)}
-.gate-ui{position:absolute;left:0;right:0;bottom:calc(5vh + env(safe-area-inset-bottom,0px));display:grid;justify-items:center;gap:12px;padding-inline:16px;text-align:center;transition:opacity .3s}
-.gate-ui p{font-family:var(--type);font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--dust)}
-#enter{min-width:190px;animation:pulse 2.4s ease-in-out infinite}
-#skip{position:absolute;right:max(14px,env(safe-area-inset-right,0px));top:calc(12px + env(safe-area-inset-top,0px));z-index:9;min-height:40px;padding:4px 10px;background:none;border:0;color:var(--dust);font-family:var(--type);font-size:13px;letter-spacing:.1em;text-transform:uppercase;text-decoration:underline;cursor:pointer}
-.vision{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:20px;padding:16px;background:#000;opacity:0;visibility:hidden;text-align:center}
-.vision .logo{width:min(320px,68vw);aspect-ratio:1;filter:brightness(.12) contrast(1.25)}
-.vision p{min-height:1.4em;font-family:var(--type);font-size:clamp(15px,3.6vw,20px);letter-spacing:.14em;text-transform:uppercase;color:var(--red-hi);opacity:0}
-.lid{position:absolute;left:-8%;width:116%;height:54%;background:#000;visibility:hidden}
-.lid.up{top:-2%;border-radius:0 0 50% 50%/0 0 30% 30%}
-.lid.dn{bottom:-2%;border-radius:50% 50% 0 0/30% 30% 0 0}
-.gate.s1 .gate-ui{opacity:0;pointer-events:none}
-.gate.s1 .scene{animation:flicker 1.5s steps(1) both}
-.gate.s1 .tape.a{transform:translate(-30%,70vh) rotate(-48deg);opacity:0}
-.gate.s1 .tape.b{transform:translate(28%,74vh) rotate(52deg);opacity:0}
-.gate.s1 .seal{opacity:0}
-.gate.s1 .torch-gate{--gx:50%;--gy:48%}
-.torch-gate{transition:opacity .6s}
-.gate.s2 .torch-gate{opacity:.5}
-.gate.s2 .leaf.l{transform:rotateY(-112deg)}
-.gate.s2 .leaf.r{transform:rotateY(112deg)}
-.gate.s3 .scene{animation:none;transform:scale(3.4);transition:transform 1.7s cubic-bezier(.6,0,.9,.5)}
-.gate.s3 .eyes{animation:eyes 1.5s linear both}
-.gate.s3 .torch-gate{opacity:0;transition:opacity .7s}
-.gate.s4 .vision{opacity:1;visibility:visible}
-.gate.s4 .vision .logo{animation:emerge 1.9s ease-in both,glitch .32s steps(2) 1.5s 2}
-.gate.s4 .vision p{animation:line 1.8s steps(1) .5s both}
-.gate.s5{background:none;perspective:none;animation:unblur 1.9s ease-out both}
-.gate.s5 .scene,.gate.s5 .vision,.gate.s5 .torch-gate,.gate.s5 .gate-ui,.gate.s5 #skip,.gate.s5 canvas{display:none}
-.gate.s5 .lid{visibility:visible}
-.gate.s5 .lid.up{animation:lid-up 1.9s ease-in-out both}
-.gate.s5 .lid.dn{animation:lid-dn 1.9s ease-in-out both}
-#grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.1;mix-blend-mode:screen}
-@keyframes pulse{50%{box-shadow:0 0 24px #e4262e}}
-@keyframes flicker{0%{opacity:1}12%{opacity:.22}24%{opacity:.8}38%{opacity:.12}52%{opacity:.7}70%{opacity:.25}84%,100%{opacity:1}}
-@keyframes eyes{0%,18%{opacity:0}26%,50%{opacity:1}54%{opacity:0}60%,88%{opacity:1}92%,100%{opacity:0}}
-@keyframes emerge{0%{filter:brightness(.05) contrast(1.3);transform:scale(.92)}82%{filter:brightness(.9) contrast(1.15) drop-shadow(0 0 26px #e4262e88);transform:scale(1.06)}100%{filter:brightness(1.05) contrast(1.15) drop-shadow(0 0 34px #e4262e);transform:scale(1.12)}}
-@keyframes glitch{0%{clip-path:inset(12% 0 58% 0);translate:-14px 0}50%{clip-path:inset(56% 0 14% 0);translate:16px 0}100%{clip-path:inset(0);translate:0 0}}
-@keyframes line{0%{opacity:0}8%,100%{opacity:1}}
-@keyframes lid-up{0%{transform:none}24%{transform:translateY(-22%)}38%,46%{transform:none}100%{transform:translateY(-112%)}}
-@keyframes lid-dn{0%{transform:none}24%{transform:translateY(22%)}38%,46%{transform:none}100%{transform:translateY(112%)}}
-@keyframes unblur{0%,50%{backdrop-filter:blur(10px) brightness(.55)}100%{backdrop-filter:blur(0) brightness(1)}}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}}
+@keyframes plunge{55%{transform:scale(1)}100%{transform:scale(2.5)}}
 
 /* Header */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--ink);border-bottom:1px solid var(--soot)}
@@ -254,7 +213,7 @@ function pins(){
 }
 function render(){
  root.innerHTML=
- '<div class="gate" id="gate"><canvas id="grain" width="200" height="120" aria-hidden="true"></canvas><div class="scene"><span class="scrawl" style="left:7%;top:10%;font-size:clamp(15px,2.3vw,28px);rotate:-5deg">They never came back</span><span class="scrawl" style="left:72%;top:16%;font-size:clamp(15px,2.4vw,30px);rotate:4deg">No body found</span><span class="scrawl" style="left:6%;top:74%;font-size:clamp(14px,2.1vw,26px);rotate:3deg">Who was watching?</span><span class="scrawl" style="left:68%;top:70%;font-size:clamp(13px,1.9vw,24px);rotate:-4deg">Truth always leaves a clue</span><span class="scrawl" style="left:40%;top:3%;font-size:clamp(14px,2vw,24px);rotate:-1deg">Don\'t open it</span><div class="door"><div class="void"><div class="eyes"><i></i><i></i></div></div><div class="leaf l"></div><div class="leaf r"></div><div class="seal"><b>Case room</b>Sealed. Do not enter.</div><div class="tape a">Crime scene do not cross crime scene do not cross</div><div class="tape b">Do not cross crime scene do not cross crime scene</div></div></div><div class="torch-gate"></div><div class="gate-ui"><p>Some files were sealed for a reason</p><button class="btn red" id="enter">Step inside</button></div><div class="vision"><span class="logo" role="img" aria-label="Lokesh Mystery Files logo"></span><p>Now you are part of the file</p></div><div class="lid up"></div><div class="lid dn"></div><button id="skip">Skip</button></div>'+
+ '<div class="gate" id="gate"><div class="gate-in"><p class="gate-line">Some of these cases were never solved</p><div class="folder"><div class="folder-back"><h1>Lokesh <b>Mystery</b> Files</h1></div><div class="cover"><span class="logo" role="img" aria-label="Lokesh Mystery Files logo"></span><div class="cover-name">Lokesh Mystery Files</div><div class="cover-meta">SUBJECT: UNSOLVED<br>FILES ON RECORD: '+String(S.files.length).padStart(3,'0')+'<br>ACCESS: ALL WHO DARE</div><span class="stamp">Classified</span></div></div><button class="btn red" id="enter">Open the file</button></div></div>'+
  '<header class="top"><div class="wrap top-in"><a class="brand" href="#files-section"><span class="logo" aria-hidden="true"></span><span>Lokesh <b>Mystery</b> Files</span></a><nav class="nav" aria-label="Sections"><a href="#videos">Latest videos</a><a href="#files-section">Case archive</a><a href="#follow">Follow</a><a href="#about">About</a></nav></div></header>'+
  '<main><div class="wrap hero"><div class="hero-copy"><p class="label">True crime and unsolved mysteries, narrated in Tamil</p><h2>Every file <em>hides</em> a question</h2><p class="lede">Real cases, old secrets and disappearances, told as a documentary. Pick a file. Follow the string.</p><div class="clock"><span class="label">Next file opens in</span><output data-clock>--:--:--</output></div><div class="acts"><a class="btn red" id="latest" href="'+e(profile('youtube'))+'" target="_blank" rel="noopener">Watch the latest video</a><button class="btn" id="random">Watch a random case</button></div></div>'+
  '<div class="wall" id="wall"><svg class="strings" id="strings" aria-hidden="true"></svg>'+pins()+'<div class="torch"></div><span class="wall-note label">Move your torch across the wall</span></div></div>'+
@@ -287,8 +246,7 @@ document.addEventListener('click',function(ev){
  var t=ev.target,c=t.closest('[data-cat]');
  if(c){filter=c.getAttribute('data-cat');[].forEach.call(document.querySelectorAll('.chip'),function(x){x.setAttribute('aria-pressed',x===c)});grid()}
 
- else if(t.id==='enter')enter(true);
- else if(t.id==='skip')endGate();
+ else if(t.id==='enter')enter();
  else if(t.id==='random')window.open(link(S.files[Math.floor(Math.random()*S.files.length)]),'_blank','noopener');
 });
 document.addEventListener('input',function(ev){if(ev.target.id==='case-search'){query=ev.target.value;grid()}});
@@ -302,48 +260,16 @@ function videos(list){
  grid();
 }
 fetch('videos.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(videos).catch(function(){});
-var gateT=[],snd=null;
-function gateAudio(){
- try{
-  var C=window.AudioContext||window.webkitAudioContext,c=new C(),out=c.createGain();out.gain.value=.5;out.connect(c.destination);
-  var n=c.createBuffer(1,c.sampleRate*2,c.sampleRate),d=n.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;
-  var now=c.currentTime,dr=c.createOscillator(),dg=c.createGain();dr.type='sawtooth';dr.frequency.value=44;
-  var lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=150;dr.connect(lp);lp.connect(dg);dg.connect(out);
-  dg.gain.setValueAtTime(.001,now);dg.gain.exponentialRampToValueAtTime(.32,now+3);dr.start();
-  function thump(t,v){var o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(70,t);o.frequency.exponentialRampToValueAtTime(34,t+.16);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+.24);o.connect(g);g.connect(out);o.start(t);o.stop(t+.26)}
-  var creak=c.createBufferSource(),bp=c.createBiquadFilter(),cg=c.createGain();creak.buffer=n;bp.type='bandpass';bp.Q.value=16;bp.frequency.setValueAtTime(260,now+.6);bp.frequency.linearRampToValueAtTime(760,now+2.5);
-  cg.gain.setValueAtTime(.001,now+.6);cg.gain.linearRampToValueAtTime(.5,now+1.1);cg.gain.linearRampToValueAtTime(.001,now+2.6);creak.connect(bp);bp.connect(cg);cg.connect(out);creak.start(now+.6,0,2);
-  [0,.32,1.1,1.4,2.1,2.36,3,3.22,3.8,4,4.5,4.7,5.1,5.28].forEach(function(t,i){thump(now+t,.5+i*.035)});
-  thump(now+6.1,1);
-  snd=function(){try{out.gain.linearRampToValueAtTime(0,c.currentTime+.4);setTimeout(function(){c.close()},600)}catch(x){}};
- }catch(x){}
-}
-function endGate(){
- var g=document.getElementById('gate');gateT.forEach(clearTimeout);gateT=[];
- if(snd){snd();snd=null}
- document.body.classList.remove('locked');
+function enter(){
+ var g=document.getElementById('gate');if(!g||g.classList.contains('open'))return;
+ g.classList.add('open');document.body.classList.remove('locked');
  try{sessionStorage.setItem('lmf-entered','1')}catch(x){}
- if(g)g.remove();strings();
+ setTimeout(strings,1400);
 }
-function enter(withSound){
- var g=document.getElementById('gate');if(!g||g.classList.contains('s1'))return;
- if(withSound)gateAudio();
- g.classList.add('s1');
- [[550,'s2'],[2500,'s3'],[4050,'s4']].forEach(function(p){gateT.push(setTimeout(function(){g.classList.add(p[1])},p[0]))});
- gateT.push(setTimeout(function(){g.classList.add('s5');document.body.classList.remove('locked');strings()},6250));
- gateT.push(setTimeout(endGate,8200));
-}
-(function(){
- var c=document.getElementById('grain');if(!c)return;var x=c.getContext('2d'),im=x.createImageData(200,120);
- setInterval(function(){if(!document.getElementById('gate'))return;for(var i=0;i<im.data.length;i+=4){var v=Math.random()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}x.putImageData(im,0,0)},90);
- var g=document.getElementById('gate'),last=0;
- g.addEventListener('pointermove',function(ev){last=Date.now();g.style.setProperty('--gx',ev.clientX+'px');g.style.setProperty('--gy',ev.clientY+'px')});
- (function drift(ts){if(!document.getElementById('gate'))return;if(Date.now()-last>2000&&!g.classList.contains('s1')){g.style.setProperty('--gx',(innerWidth*(.5+.36*Math.sin(ts/1900)))+'px');g.style.setProperty('--gy',(innerHeight*(.46+.28*Math.cos(ts/1400)))+'px')}requestAnimationFrame(drift)})(0);
-})();
 var seen=false;try{seen=sessionStorage.getItem('lmf-entered')==='1'}catch(x){}
 render();
 if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches)document.getElementById('gate').remove();
-else{document.body.classList.add('locked');gateT.push(setTimeout(function(){enter(false)},15000))}
+else{document.body.classList.add('locked');setTimeout(enter,9000)}
 addEventListener('resize',strings);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(strings);
 /* Torch */
