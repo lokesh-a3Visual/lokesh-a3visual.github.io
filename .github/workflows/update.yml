@@ -1,0 +1,94 @@
+name: Update site
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # 3:20 PM and 6:20 PM IST, just after the daily 3 PM upload
+    - cron: "50 9 * * *"
+    - cron: "50 12 * * *"
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch new YouTube videos
+        continue-on-error: true
+        run: |
+          python3 - videos.json <<'PY'
+          import json, os, re, sys, urllib.request
+          import xml.etree.ElementTree as ET
+
+          HANDLE = "Lokeshmysteryfiles"
+          UA = {"User-Agent": "Mozilla/5.0"}
+          NS = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
+
+          def get(url):
+              req = urllib.request.Request(url, headers=UA)
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  return r.read().decode("utf-8")
+
+          def channel_id():
+              if os.environ.get("CHANNEL_ID"):
+                  return os.environ["CHANNEL_ID"]
+              page = get(f"https://www.youtube.com/@{HANDLE}")
+              m = re.search(r'"(?:externalId|channelId)":"(UC[\w-]{22})"', page) or re.search(r'channel_id=(UC[\w-]{22})', page)
+              if not m:
+                  raise SystemExit("Could not find the channel ID. Set CHANNEL_ID in the workflow.")
+              return m.group(1)
+
+          def parse(xml):
+              out = []
+              for en in ET.fromstring(xml).findall("a:entry", NS):
+                  link = en.find("a:link", NS).get("href", "")
+                  out.append({
+                      "id": en.find("yt:videoId", NS).text,
+                      "title": en.find("a:title", NS).text,
+                      "published": en.find("a:published", NS).text,
+                      "shorts": "/shorts/" in link,
+                  })
+              return out
+
+          def merge(old, new):
+              seen = {v["id"]: v for v in old}
+              seen.update({v["id"]: v for v in new})
+              return sorted(seen.values(), key=lambda v: v["published"], reverse=True)
+
+          if __name__ == "__main__":
+              path = sys.argv[1] if len(sys.argv) > 1 else "videos.json"
+              with open(path, encoding="utf-8") as f:
+                  old = json.load(f)
+              feed = get(f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id()}")
+              with open(path, "w", encoding="utf-8") as f:
+                  json.dump(merge(old, parse(feed)), f, ensure_ascii=False, indent=1)
+          PY
+      - name: Save video list
+        run: |
+          git config user.name "site-bot"
+          git config user.email "site-bot@users.noreply.github.com"
+          git add videos.json
+          git diff --cached --quiet || (git commit -m "Update videos" && git push)
+      - id: pages
+        uses: actions/configure-pages@v5
+      - name: Prepare site
+        run: |
+          mkdir _site
+          cp index.html videos.json logo.jpg _site/
+          sed -i "s#__SITE_URL__#${{ steps.pages.outputs.base_url }}#g" _site/index.html
+          printf 'User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n' "${{ steps.pages.outputs.base_url }}" > _site/robots.txt
+          printf '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>%s/</loc></url></urlset>\n' "${{ steps.pages.outputs.base_url }}" > _site/sitemap.xml
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4
