@@ -91,6 +91,7 @@ p{margin:0}
 .pin-card{position:absolute;width:var(--cw);padding:7px 7px 8px;background:var(--paper);color:var(--ink);box-shadow:0 8px 18px #0009;transform:rotate(var(--r));text-decoration:none;font-family:var(--type);font-size:12px;line-height:1.25;border:0;cursor:pointer;text-align:left}
 .pin-card::before{content:"";position:absolute;left:50%;top:-5px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--red-hi);box-shadow:0 2px 3px #000a}
 .pin-card svg{display:block;width:100%;aspect-ratio:1.5;background:var(--desk);color:var(--dust);margin-bottom:6px}
+.photo svg{display:block;width:100%;aspect-ratio:1.55;background:var(--desk);color:var(--dust)}
 .torch{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle 210px at var(--x,62%) var(--y,44%),transparent 0,#08060538 52%,#080605e0 100%)}
 .wall-note{position:absolute;left:0;bottom:0;padding:5px 10px;background:var(--ink);color:var(--bone);font-size:11px}
 
@@ -106,11 +107,10 @@ p{margin:0}
 .chip[aria-pressed="true"]{background:var(--bone);border-color:var(--bone);color:var(--ink)}
 .chip:hover{border-color:var(--bone)}
 .files{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:44px 22px}
-.file{position:relative;display:flex;flex-direction:column;gap:10px;min-width:0;padding:14px;background:var(--manila);color:var(--ink);border:0;text-align:left;font:inherit;cursor:pointer;transition:transform .2s}
+.file{text-decoration:none;position:relative;display:flex;flex-direction:column;gap:10px;min-width:0;padding:14px;background:var(--manila);color:var(--ink);border:0;text-align:left;font:inherit;cursor:pointer;transition:transform .2s}
 .file::before{content:attr(data-no);position:absolute;left:0;top:-24px;height:25px;padding:6px 24px 0 11px;background:var(--manila);font-family:var(--type);font-size:12px;letter-spacing:.1em;clip-path:polygon(0 0,84% 0,100% 100%,0 100%)}
 .file:hover{transform:translateY(-5px) rotate(-.5deg)}
 .photo{background:var(--paper);padding:7px}
-.photo svg{display:block;width:100%;aspect-ratio:1.55;background:var(--desk);color:var(--dust)}
 .file h3{font-family:var(--type);font-size:15px;letter-spacing:.03em;line-height:1.3}
 .file .stamp{align-self:flex-start;margin-top:auto;font-size:12px;transform:rotate(-2deg)}
 .next-tile{display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0;padding:20px;border:1px dashed var(--dust)}
@@ -127,24 +127,9 @@ p{margin:0}
 footer{padding-block:26px;border-top:1px solid var(--soot);color:var(--dust);font-size:14px}
 
 .vids{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 20px}
-.vid{display:grid;gap:10px;align-content:start;min-width:0;padding:0;background:none;border:0;color:var(--bone);font-family:var(--body);font-size:16px;line-height:1.35;text-align:left;cursor:pointer}
+.vid{text-decoration:none;display:grid;gap:10px;align-content:start;min-width:0;padding:0;background:none;border:0;color:var(--bone);font-family:var(--body);font-size:16px;line-height:1.35;text-align:left;cursor:pointer}
 .vid img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border:7px solid var(--paper);transition:transform .2s}
 .vid:hover img{transform:scale(1.02)}
-#player{width:min(980px,calc(100vw - 32px));background:var(--ink);color:var(--bone);display:none;padding:8px}
-#player[open]{display:grid;gap:4px}
-.frame{aspect-ratio:16/9;max-width:100%}
-.frame iframe{width:100%;height:100%;border:0;display:block}
-/* Dossier */
-dialog{width:min(620px,calc(100vw - 32px));max-height:calc(100dvh - 40px);padding:0;border:0;background:var(--paper);color:var(--ink);overflow:auto}
-dialog::backdrop{background:#000c}
-.dos{display:grid;gap:14px;padding:26px}
-.dos h2{font-size:clamp(30px,6vw,42px)}
-.dos .photo{background:var(--ink);padding:0}
-.dos .row{display:flex;gap:10px;flex-wrap:wrap}
-.dos .btn{border-color:var(--ink);color:var(--ink)}
-.dos .btn:hover{background:var(--ink);color:var(--paper)}
-.dos .btn.red{border-color:var(--red);color:var(--bone)}
-.x{justify-self:end;min-height:40px;background:none;border:0;color:inherit;font-family:var(--type);font-size:14px;cursor:pointer;text-decoration:underline}
 
 @media(max-width:1020px){.files,.vids{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:820px){.hero,.about{grid-template-columns:minmax(0,1fr)}.channels{grid-template-columns:minmax(0,1fr)}.pin-card{font-size:11px}.pin-card.far{display:none}}
@@ -171,15 +156,6 @@ var root=document.getElementById('root');
 var filter='All', query='';
 var CH='Lokesh Mystery Files';
 var CATS=['True crime','Missing','Ocean','History','Unsolved'];
-var G={
- ship:'<path d="M18 74h84l-10 16H30z" fill="currentColor"/><path d="M60 16v58M60 22 34 66h26zM60 28l26 38H60z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 96c9-6 18-6 27 0s18 6 27 0 18-6 27 0 18 6 27 0" fill="none" stroke="currentColor" stroke-width="3"/>',
- plane:'<path d="M12 62 50 54 74 26h9L72 52l26-6 8-11h7l-5 17 9 13-7 2-10-8-27 7 8 25h-8L54 69 16 73z" fill="currentColor"/><circle cx="60" cy="52" r="42" fill="none" stroke="currentColor" stroke-dasharray="4 7" stroke-width="2"/>',
- temple:'<path d="M60 8 66 22H54zM50 24h20l5 15H45zM41 41h38l5 15H36zM32 58h56l5 15H27zM20 75h80v21H20z" fill="currentColor"/>',
- stone:'<path d="M28 72 38 38 66 26l28 18 6 30-22 16H42z" fill="currentColor"/><path d="M6 96h108" stroke="currentColor" stroke-width="3"/>',
- road:'<path d="M46 8h28l34 90H12z" fill="currentColor"/><path d="M60 16v12M60 38v16M60 66v24" stroke="#16110f" stroke-width="4"/>',
- mark:'<path d="M60 8a30 30 0 0 0-30 30c0 24 30 58 30 58s30-34 30-58A30 30 0 0 0 60 8z" fill="currentColor"/><text x="60" y="52" text-anchor="middle" font-size="36" fill="#16110f" font-family="Georgia,serif">?</text>'
-};
-function glyph(k){return '<svg viewBox="-30 0 180 104" aria-hidden="true">'+(G[k]||G.mark)+'</svg>'}
 function e(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function safe(u){return /^https:\/\//i.test(u||'')?u:''}
 function no(i){return 'FILE '+String(S.files.length-i).padStart(3,'0')}
@@ -191,9 +167,31 @@ function profile(k){
  if(k==='facebook')return 'https://www.facebook.com/search/top?q='+encodeURIComponent(CH);
  return 'https://www.instagram.com/';
 }
-function ext(u,t,c){return '<a class="'+c+'" href="'+e(u)+'" target="_blank" rel="noopener">'+t+'</a>'}
+var G={
+ ship:'<path d="M18 74h84l-10 16H30z" fill="currentColor"/><path d="M60 16v58M60 22 34 66h26zM60 28l26 38H60z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 96c9-6 18-6 27 0s18 6 27 0 18-6 27 0 18 6 27 0" fill="none" stroke="currentColor" stroke-width="3"/>',
+ plane:'<path d="M12 62 50 54 74 26h9L72 52l26-6 8-11h7l-5 17 9 13-7 2-10-8-27 7 8 25h-8L54 69 16 73z" fill="currentColor"/><circle cx="60" cy="52" r="42" fill="none" stroke="currentColor" stroke-dasharray="4 7" stroke-width="2"/>',
+ temple:'<path d="M60 8 66 22H54zM50 24h20l5 15H45zM41 41h38l5 15H36zM32 58h56l5 15H27zM20 75h80v21H20z" fill="currentColor"/>',
+ stone:'<path d="M28 72 38 38 66 26l28 18 6 30-22 16H42z" fill="currentColor"/><path d="M6 96h108" stroke="currentColor" stroke-width="3"/>',
+ road:'<path d="M46 8h28l34 90H12z" fill="currentColor"/><path d="M60 16v12M60 38v16M60 66v24" stroke="#16110f" stroke-width="4"/>',
+ mark:'<path d="M60 8a30 30 0 0 0-30 30c0 24 30 58 30 58s30-34 30-58A30 30 0 0 0 60 8z" fill="currentColor"/><text x="60" y="52" text-anchor="middle" font-size="36" fill="#16110f" font-family="Georgia,serif">?</text>'
+};
+function glyph(k){return '<svg viewBox="-30 0 180 104" aria-hidden="true">'+(G[k]||G.mark)+'</svg>'}
+var VIDS=[];
+var KEYS={tiruchendur:['tiruchendur','thiruchendur','tiruchendhur','திருச்செந்தூர்'],thanjavur:['thanjavur','tanjore','brihadeeswar','brihadisvara','தஞ்சை'],'kerala-benz':['benz'],sophia:['sophia','koetsier','uganda'],stoneman:['stoneman','stone man','stonemen'],bermuda:['bermuda','flight 19','cyclops'],'mary-celeste':['mary celeste','மேரி செலஸ்ட்']};
+function vurl(v){return 'https://www.youtube.com/watch?v='+v.id}
+function best(f){
+ var k=KEYS[f.id]||[f.subject.toLowerCase()];
+ var m=VIDS.filter(function(v){var t=v.title.toLowerCase();return k.some(function(w){return t.indexOf(w)>-1})});
+ return m.filter(function(v){return !v.shorts})[0]||m[0];
+}
+function link(f){
+ if(safe(f.youtube))return f.youtube;
+ var v=best(f);return v?vurl(v):ytSearch(f.subject);
+}
+function media(f){return glyph(f.glyph)}
+function attrs(f){return 'href="'+e(link(f))+'" target="_blank" rel="noopener" data-case="'+e(f.id)+'"'}
 function fileCard(f,i){
- return '<button class="file" data-open="'+e(f.id)+'" data-no="'+no(i)+'"><div class="photo">'+glyph(f.glyph)+'</div><h3>'+e(f.place)+' | '+e(f.subject)+'</h3><span class="stamp">'+e(f.status)+'</span></button>';
+ return '<a class="file" '+attrs(f)+' data-no="'+no(i)+'" title="'+e(f.summary)+'"><div class="photo">'+media(f)+'</div><h3>'+e(f.place)+' | '+e(f.subject)+'</h3><span class="stamp">'+e(f.status)+'</span></a>';
 }
 function visible(){
  var q=query.trim().toLowerCase();
@@ -211,14 +209,13 @@ function grid(){
 function pins(){
  var P=[['72%','7%','-3deg',''],['8%','9%','2deg',''],['40%','33%','-1.5deg',''],['73%','57%','3deg',''],['5%','58%','-2deg','far'],['40%','71%','1.5deg','far']];
  return S.files.slice(0,6).map(function(f,i){var p=P[i];
-  return '<button class="pin-card '+p[3]+'" style="left:min('+p[0]+',calc(100% - var(--cw) - 12px));top:min('+p[1]+',calc(100% - 178px));--r:'+p[2]+'" data-open="'+e(f.id)+'">'+glyph(f.glyph)+e(f.place)+' | '+e(f.subject)+'</button>'}).join('');
+  return '<a class="pin-card '+p[3]+'" style="left:min('+p[0]+',calc(100% - var(--cw) - 12px));top:min('+p[1]+',calc(100% - 178px));--r:'+p[2]+'" '+attrs(f)+'>'+media(f)+e(f.place)+' | '+e(f.subject)+'</a>'}).join('');
 }
 function render(){
- var first=S.files[0]||{subject:'',id:''};
  root.innerHTML=
  '<div class="gate" id="gate"><div class="gate-in"><p class="gate-line">Some of these cases were never solved</p><div class="folder"><div class="folder-back"><h1>Lokesh <b>Mystery</b> Files</h1></div><div class="cover"><span class="logo" role="img" aria-label="Lokesh Mystery Files logo"></span><div class="cover-name">Lokesh Mystery Files</div><div class="cover-meta">SUBJECT: UNSOLVED<br>FILES ON RECORD: '+String(S.files.length).padStart(3,'0')+'<br>ACCESS: ALL WHO DARE</div><span class="stamp">Classified</span></div></div><button class="btn red" id="enter">Open the file</button></div></div>'+
  '<header class="top"><div class="wrap top-in"><a class="brand" href="#files-section"><span class="logo" aria-hidden="true"></span><span>Lokesh <b>Mystery</b> Files</span></a><nav class="nav" aria-label="Sections"><a href="#videos">Latest videos</a><a href="#files-section">Case archive</a><a href="#follow">Follow</a><a href="#about">About</a></nav></div></header>'+
- '<main><div class="wrap hero"><div class="hero-copy"><p class="label">True crime and unsolved mysteries, narrated in Tamil</p><h2>Every file <em>hides</em> a question</h2><p class="lede">Real cases, old secrets and disappearances, told as a documentary. Pick a file. Follow the string.</p><div class="clock"><span class="label">Next file opens in</span><output data-clock>--:--:--</output></div><div class="acts"><button class="btn red" data-open="'+e(first.id)+'">Open the latest file</button><button class="btn" id="random">Pull a random file</button></div></div>'+
+ '<main><div class="wrap hero"><div class="hero-copy"><p class="label">True crime and unsolved mysteries, narrated in Tamil</p><h2>Every file <em>hides</em> a question</h2><p class="lede">Real cases, old secrets and disappearances, told as a documentary. Pick a file. Follow the string.</p><div class="clock"><span class="label">Next file opens in</span><output data-clock>--:--:--</output></div><div class="acts"><a class="btn red" id="latest" href="'+e(profile('youtube'))+'" target="_blank" rel="noopener">Watch the latest video</a><button class="btn" id="random">Watch a random case</button></div></div>'+
  '<div class="wall" id="wall"><svg class="strings" id="strings" aria-hidden="true"></svg>'+pins()+'<div class="torch"></div><span class="wall-note label">Move your torch across the wall</span></div></div>'+
  '<section class="band" id="videos" hidden><div class="wrap"><div class="head"><h2>Latest videos</h2><a class="btn" href="'+e(profile('youtube'))+'" target="_blank" rel="noopener">All videos on YouTube</a></div><div class="vids" id="vids"></div></div></section>'+
  '<section class="band desk" id="files-section"><div class="wrap"><div class="head"><h2>Case archive</h2><p class="label">'+S.files.length+' files on record</p></div><div class="tools"><input id="case-search" type="search" placeholder="Search a place, a name, a year" aria-label="Search the case archive" value="'+e(query)+'">'+['All'].concat(CATS).map(function(c){return '<button class="chip" data-cat="'+c+'" aria-pressed="'+(c===filter)+'">'+c+'</button>'}).join('')+'</div><div class="files" id="grid"></div></div></section>'+
@@ -229,7 +226,7 @@ function render(){
  '</div></div></section>'+
  '<section class="band desk" id="about"><div class="wrap about"><div style="display:grid;gap:22px"><h2>Who keeps these files</h2><span class="logo about-mark" role="img" aria-label="Lokesh Mystery Files logo"></span></div><div><p>Lokesh Mystery Files retells true crime, unsolved mysteries and historical secrets in Tamil, in a documentary style.</p><p>Every story is about real people. The channel tells these cases with respect for victims and their families.</p></div></div></section></main>'+
  '<footer><div class="wrap">Lokesh Mystery Files. Case details are retold from public reports for commentary and education.</div></footer>'+
- '<dialog id="dossier"></dialog><dialog id="player"></dialog>';
+ ''
  grid();strings();
 }
 function strings(){
@@ -245,36 +242,22 @@ function tick(){
  [].forEach.call(document.querySelectorAll('[data-clock]'),function(o){o.textContent=s});
 }
 setInterval(tick,1000);
-function openFile(id){
- var f=S.files.filter(function(x){return x.id===id})[0],D=document.getElementById('dossier');if(!f)return;
- var yt=safe(f.youtube),ig=safe(f.instagram),fb=safe(f.facebook);
- D.innerHTML='<div class="dos"><button class="x" data-close>Close file</button><span class="label" style="color:inherit">'+no(S.files.indexOf(f))+' · '+e(f.cat)+'</span><div class="photo">'+glyph(f.glyph)+'</div><h2>'+e(f.subject)+'</h2><p style="font-family:var(--type)">'+e(f.place)+' | '+e(f.status)+'</p><p>'+e(f.summary)+'</p><div class="row">'+
- ext(yt||ytSearch(f.subject),yt?'Watch on YouTube':'Find on YouTube','btn red')+(ig?ext(ig,'Watch on Instagram','btn'):'')+(fb?ext(fb,'Watch on Facebook','btn'):'')+'</div></div>';
- D.showModal();
-}
 document.addEventListener('click',function(ev){
- var t=ev.target,o=t.closest('[data-open]'),c=t.closest('[data-cat]'),v=t.closest('[data-play]');
- if(v)play(v.getAttribute('data-play'),v.getAttribute('data-title'));
- else if(o)openFile(o.getAttribute('data-open'));
- else if(c){filter=c.getAttribute('data-cat');[].forEach.call(document.querySelectorAll('.chip'),function(x){x.setAttribute('aria-pressed',x===c)});grid()}
+ var t=ev.target,c=t.closest('[data-cat]');
+ if(c){filter=c.getAttribute('data-cat');[].forEach.call(document.querySelectorAll('.chip'),function(x){x.setAttribute('aria-pressed',x===c)});grid()}
 
- else if(t.closest('[data-close]'))t.closest('dialog').close();
  else if(t.id==='enter')enter();
- else if(t.id==='random')openFile(S.files[Math.floor(Math.random()*S.files.length)].id);
- else if(t.tagName==='DIALOG')t.close();
+ else if(t.id==='random')window.open(link(S.files[Math.floor(Math.random()*S.files.length)]),'_blank','noopener');
 });
 document.addEventListener('input',function(ev){if(ev.target.id==='case-search'){query=ev.target.value;grid()}});
-function play(id,title){
- var D=document.getElementById('player');
- D.innerHTML='<button class="x" data-close>Close video</button><div class="frame"><iframe src="https://www.youtube-nocookie.com/embed/'+e(id)+'?autoplay=1&rel=0" title="'+e(title)+'" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe></div>';
- D.showModal();
-}
-document.addEventListener('close',function(ev){if(ev.target.id==='player')ev.target.innerHTML=''},true);
 function videos(list){
- list=list.filter(function(v){return /^[\w-]{6,20}$/.test(v.id)}).slice(0,9);if(!list.length)return;
- document.getElementById('vids').innerHTML=list.map(function(v){
-  return '<button class="vid" data-play="'+e(v.id)+'" data-title="'+e(v.title)+'"><img loading="lazy" src="https://i.ytimg.com/vi/'+e(v.id)+'/hqdefault.jpg" alt=""><span>'+e(v.title)+'</span></button>'}).join('');
+ VIDS=list.filter(function(v){return /^[\w-]{6,20}$/.test(v.id)});if(!VIDS.length)return;
+ document.getElementById('vids').innerHTML=VIDS.slice(0,9).map(function(v){
+  return '<a class="vid" href="'+e(vurl(v))+'" target="_blank" rel="noopener"><img loading="lazy" src="https://i.ytimg.com/vi/'+e(v.id)+'/hqdefault.jpg" alt=""><span>'+e(v.title)+'</span></a>'}).join('');
  document.getElementById('videos').hidden=false;
+ document.getElementById('latest').href=vurl((VIDS.filter(function(v){return !v.shorts})[0])||VIDS[0]);
+ [].forEach.call(document.querySelectorAll('.pin-card[data-case]'),function(a){var f=S.files.filter(function(x){return x.id===a.getAttribute('data-case')})[0];if(f){a.href=link(f);a.innerHTML=media(f)+e(f.place)+' | '+e(f.subject)}});
+ grid();
 }
 fetch('videos.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(videos).catch(function(){});
 function enter(){
